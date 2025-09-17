@@ -28,3 +28,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export CARGO_HOME=$HOME/.cargo
+export RUSTUP_HOME=$HOME/.rustup
+export CARGO_TARGET_ARM_UNKNOWN_LINUX_ANDROID_LINKER=clang
+. "$HOME/.cargo/env"
+export CARGO_HOME=$HOME/.cargo
+export RUSTUP_HOME=$HOME/.rustup
+export CARGO_TARGET_ARM_UNKNOWN_LINUX_ANDROID_LINKER=clang
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
