@@ -16,9 +16,9 @@ Explanation: Creates a local copy of a remote repository.
 Example: git clone https://github.com/user/repo.git
 
 
-====================================
+#====================================#
 STAGING CHANGES
-====================================
+#====================================#
 
 git status
 Explanation: Shows the status of changes in the working directory and staging area.
@@ -33,18 +33,18 @@ Explanation: Stages all changes in the current directory.
 Example: git add .
 
 
-====================================
+#====================================#
 COMMITTING CHANGES
-====================================
+#====================================#
 
 git commit -m "message"
 Explanation: Commits the staged changes with a descriptive message.
 Example: git commit -m "Add initial project files"
 
 
-====================================
+#====================================#
 WORKING WITH BRANCHES
-====================================
+#====================================#
 
 git branch
 Explanation: Lists all local branches in the repository.
@@ -67,9 +67,9 @@ Explanation: Merges the specified branch into the current branch.
 Example: git merge feature-login
 
 
-====================================
+#====================================#
 WORKING WITH REMOTES
-====================================
+#====================================#
 
 git remote -v
 Explanation: Lists remote repositories linked to the project.
@@ -88,9 +88,9 @@ Explanation: Fetches and integrates changes from the remote repository into the 
 Example: git pull
 
 
-====================================
+#====================================#
 INSPECTING HISTORY
-====================================
+#====================================#
 
 git log
 Explanation: Shows the commit history for the current branch.
@@ -101,9 +101,9 @@ Explanation: Displays information about a specific commit.
 Example: git show 1a2b3c4d
 
 
-====================================
+#====================================#
 UNDOING CHANGES
-====================================
+#====================================#
 
 git reset <file>
 Explanation: Unstages a file without removing changes from the working directory.
@@ -118,9 +118,9 @@ Explanation: Discards changes in a file, restoring it to the last committed vers
 Example: git checkout -- README.md
 
 
-====================================
+#====================================#
 SOURCES
-====================================
+#====================================#
 
 - Git Documentation: https://git-scm.com/docs  
 - GitHub Docs: https://docs.github.com/en/get-started/using-git  
