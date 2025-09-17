@@ -3,9 +3,9 @@ This document lists common Git commands for managing repositories directly from 
 Commands are grouped by workflow stage: creating a repo, staging files, committing changes, working with branches, and syncing with remotes.  
 Each command includes an explanation and an example.
 
-====================================
+#====================================#
 INITIALIZE A NEW REPOSITORY
-====================================
+#====================================#
 
 git init
 Explanation: Creates a new local Git repository in the current directory.
