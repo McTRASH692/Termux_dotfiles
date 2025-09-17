@@ -1,53 +1,74 @@
+#====================================#
+# CUSTOM BASH PROMPT
+#====================================#
 
-# Define some basic colors using tput (8-bit color: 256 colors)
-red="\[$(tput setaf 160)\]"
-bright_red="\[$(tput setaf 196)\]"
-light_purple="\[$(tput setaf 60)\]"
-orange="\[$(tput setaf 172)\]"
-blue="\[$(tput setaf 21)\]"
-light_blue="\[$(tput setaf 80)\]"
-magenta="\[$(tput setf 5)\]"
-purple="\[$(tput setaf 125)\]"
-bold="\[$(tput bold)\]"
-reset="\[$(tput sgr0)\]"
+# Attempt to use tput for colors, fallback to true-color if it fails
+if command -v tput >/dev/null 2>&1 && tput setaf 0 >/dev/null 2>&1; then
+    # tput works
+    red="\[$(tput setaf 160)\]"
+    bright_red="\[$(tput setaf 196)\]"
+    light_purple="\[$(tput setaf 60)\]"
+    orange="\[$(tput setaf 172)\]"
+    blue="\[$(tput setaf 21)\]"
+    light_blue="\[$(tput setaf 80)\]"
+    magenta="\[$(tput setf 5)\]"
+    purple="\[$(tput setaf 125)\]"
+    bold="\[$(tput bold)\]"
+    reset="\[$(tput sgr0)\]"
+    violet="\[$(tput setaf 93)\]"  # violet for time
+else
+    echo "Warning: tput command not found or failed; using true-color fallback"
+    # True-color fallback
+    red="\[\e[38;2;205;49;49m\]"
+    bright_red="\[\e[38;2;255;0;0m\]"
+    light_purple="\[\e[38;2;150;123;182m\]"
+    orange="\[\e[38;2;255;165;0m\]"
+    blue="\[\e[38;2;0;0;255m\]"
+    light_blue="\[\e[38;2;135;206;250m\]"
+    magenta="\[\e[38;2;255;0;255m\]"
+    purple="\[\e[38;2;125;0;255m\]"
+    bold="\[\e[1m\]"
+    reset="\[\e[0m\]"
+    violet="\[\e[38;2;148;0;211m\]"  # violet for time
+fi
 
+# Username color (light_blue, root: bright_red)
+username_color="${reset}${bold}${light_blue}\$([[ \${EUID} == 0 ]] && echo \"${bright_red}\")"
 
-# Define basic colors to be used in prompt
-## The color for username (light_blue, for root user: bright_red)
-username_color="${reset}${bold}${light_blue}\$([[ \${EUID} == 0 ]] && echo \"${bright_red}\")";
-## Color of @ and ✗ symbols (orange)
+# Symbols
 at_color=$reset$bold$orange
-## Color of host/pc-name (blue)
 host_color=$reset$bold$blue
-## Color of current working directory (light_purple)
 directory_color=$reset$light_purple
-## Color for other characters (like the arrow)
 etc_color=$reset$red
-# If last operation did not succeded, add [✗]- to the prompt
+
+# Error indicator
 on_error="\$([[ \$? != 0 ]] && echo \"${etc_color}[${at_color}✗${etc_color}]─\")"
-# The last symbol in prompt ($, for root user: #)
-symbol="$reset${bold}${bright_red}$(if [[ ${EUID} == 0 ]]; then echo '#'; else echo '$'; fi)"
 
-# Time
-date="${reset}${bold}${light_purple}\D{%d-%m-%Y}"
-#time="${reset}${bold}${purple}\A${reset}"
-time="${reset}${bold}${purple}\$(date +%H:%M:%S)"
+# Last symbol ($ for normal, # for root)
+symbol="$reset${bold}${bright_red}\$(if [[ \${EUID} == 0 ]]; then echo '#'; else echo '$'; fi)"
 
-# Setup the prompt/prefix for linux terminal
+#====================#
+# Time & Date
+#====================#
+time="${violet}\$(date +%H:%M:%S 2>/dev/null)${reset}"
+date="\$(date +%d-%m-%Y 2>/dev/null)"
+
+#====================#
+# PROMPT SETUP
+#====================#
 PS1="\n"
-PS1+="${etc_color}┌─${on_error}[";
-PS1+="${username_color}\u"; # \u=Username
-PS1+="${at_color}@";
-PS1+="${host_color}\h" #\h=Host
-PS1+="${etc_color}]-[";
-PS1+="${directory_color}\w"; # \w=Working directory
-PS1+="${etc_color}]\n└──╼ "; # \n=New Line
-PS1+="${time}"
-PS1+="  "
+PS1+="${etc_color}┌─${on_error}["
+PS1+="${username_color}\u"
+PS1+="${at_color}@"
+PS1+="${host_color}\h"
+PS1+="${etc_color}]-["
+PS1+="${directory_color}\w"
+PS1+="${etc_color}]\n└──╼ "
+PS1+="${time}  "
 PS1+="${date}"
 PS1+="\n"
-PS1+="${etc_color}   └──╼ "; # \n=New Line
-PS1+="${symbol}";
-PS1+="${reset}";
+PS1+="${etc_color}   └──╼ "
+PS1+="${symbol}"
+PS1+="${reset}"
 
 export PS1

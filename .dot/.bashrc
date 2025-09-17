@@ -1,39 +1,32 @@
+#====================================#
+# BASHRC
+#====================================#
 
-
-
-if [ -r /data/data/com.termux/files/home/.dot/.aliases ]; then
-	. /data/data/com.termux/files/home/.dot/.aliases
-
+#====================#
+# Load Aliases & Prompt
+#====================#
+if [ -r "$HOME/.dot/.aliases" ]; then
+    . "$HOME/.dot/.aliases"
 fi
 
-if [ -r /data/data/com.termux/files/home/.dot/.bash_prompt ]; then
-        . /data/data/com.termux/files/home/.dot/.bash_prompt
-
+if [ -r "$HOME/.dot/.bash_prompt" ]; then
+    . "$HOME/.dot/.bash_prompt"
 fi
 
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+#====================#
+# Load MOTD
+#====================#
+if [ -r "$HOME/.motd/init.sh" ]; then
+    . "$HOME/.motd/init.sh"
 fi
 
-# export SDCARD=/storage/737F-E954
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+#====================#
+# Load Auto-functions & Functions
+#====================#
+if [ -r "$HOME/.dot/.auto-functions" ]; then
+    . "$HOME/.dot/.auto-functions"
 fi
 
-export CARGO_HOME=$HOME/.cargo
-export RUSTUP_HOME=$HOME/.rustup
-export CARGO_TARGET_ARM_UNKNOWN_LINUX_ANDROID_LINKER=clang
-. "$HOME/.cargo/env"
-export CARGO_HOME=$HOME/.cargo
-export RUSTUP_HOME=$HOME/.rustup
-export CARGO_TARGET_ARM_UNKNOWN_LINUX_ANDROID_LINKER=clang
-export PATH=$HOME/.local/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
+if [ -r "$HOME/.dot/.functions" ]; then
+    . "$HOME/.dot/.functions"
+fi

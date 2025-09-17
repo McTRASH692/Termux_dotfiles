@@ -1,0 +1,45 @@
+#====================================#
+# AUTO-FUNCTIONS
+#====================================#
+
+# --- Load aliases ---
+if [ -r "$HOME/.dot/.aliases" ]; then
+    . "$HOME/.dot/.aliases"
+fi
+
+# --- Load custom bash prompt ---
+if [ -r "$HOME/.dot/.bash_prompt" ]; then
+    . "$HOME/.dot/.bash_prompt"
+fi
+
+# --- Add local bin directories to PATH if they exist ---
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+[ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH"
+[ -d "$HOME/.docker/bin" ] && PATH="$HOME/.docker/bin:$PATH"
+
+# --- Rust environment variables ---
+[ -d "$HOME/.cargo" ] && export CARGO_HOME="$HOME/.cargo"
+[ -d "$HOME/.rustup" ] && export RUSTUP_HOME="$HOME/.rustup"
+[ -d "$HOME/.cargo" ] && export CARGO_TARGET_ARM_UNKNOWN_LINUX_ANDROID_LINKER=clang
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# --- Docker environment ---
+[ -d "$HOME/.docker" ] && export DOCKER_HOST="unix://$HOME/.docker/docker.sock"
+
+# --- MSD / SD card environment ---
+export MSD="/storage/7FAF-F8CD"
+
+# --- Bash completion ---
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+fi
+
+
+# Enable colored ls output if dircolors exists
+if command -v dircolors >/dev/null 2>&1; then
+    eval "$(dircolors -b)"
+fi

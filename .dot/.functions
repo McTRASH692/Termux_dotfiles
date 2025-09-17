@@ -1,0 +1,142 @@
+#====================#
+# FUNCTIONS
+#====================#
+
+#--------------------#
+# Function: cds
+# Description: Change directory when multiple folders have the same name
+# Usage: cds <folder-name>
+#--------------------#
+cds() {
+    if [ -z "$1" ]; then
+        echo "Usage: cds <folder-name>"
+        return 1
+    fi
+    matches=($(find . -type d -name "$1"))
+    count=${#matches[@]}
+    if [ $count -eq 0 ]; then
+        echo "No directory named '$1' found"
+        return 1
+    elif [ $count -eq 1 ]; then
+        cd "${matches[0]}" || return
+    else
+        echo "Multiple directories found:"
+        for i in "${!matches[@]}"; do
+            echo "$i: ${matches[$i]}"
+        done
+        read -rp "Enter number to cd into: " choice
+        if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 0 ] && [ "$choice" -lt $count ]; then
+            cd "${matches[$choice]}" || return
+        else
+            echo "Invalid choice"
+        fi
+    fi
+}
+
+#--------------------#
+# Function: listdirs
+# Description: Lists all directories matching a name with tree
+# Usage: listdirs <folder-name>
+#--------------------#
+listdirs() {
+    if [ -z "$1" ]; then
+        echo "Usage: listdirs <folder-name>"
+        return 1
+    fi
+    find . -type d -name "$1" -exec tree -C {} \;
+}
+
+#--------------------#
+# Function: pyenvs
+# Description: List all Python virtual environments and allow entry
+# Usage: pyenvs
+#--------------------#
+pyenvs() {
+    envs=($(find "$HOME" -type d -name "venv" -or -name "env"))
+    if [ ${#envs[@]} -eq 0 ]; then
+        echo "No Python virtual environments found."
+        return
+    fi
+    echo "Available Python environments:"
+    for i in "${!envs[@]}"; do
+        echo "$i: ${envs[$i]}"
+    done
+    read -rp "Enter number to activate environment (Ctrl+C to cancel): " choice
+    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 0 ] && [ "$choice" -lt ${#envs[@]} ]; then
+        source "${envs[$choice]}/bin/activate"
+    else
+        echo "Invalid choice or cancelled"
+    fi
+}
+
+#--------------------#
+# Function: update-all
+# Description: Updates all package managers installed, lists updated packages, counts, and disk usage
+# Usage: update-all
+#--------------------#
+update-all() {
+    echo "Starting update-all..."
+    
+    # Record initial disk usage
+    initial_usage=$(df -h ~ | awk 'NR==2 {print $3}')
+    echo "Initial storage used: $initial_usage"
+
+    grand_total=0
+
+    # Define package managers installed (check if commands exist)
+    managers=()
+    command -v pkg >/dev/null 2>&1 && managers+=("pkg")
+    command -v pip >/dev/null 2>&1 && managers+=("pip")
+    command -v cargo >/dev/null 2>&1 && managers+=("cargo")
+    command -v apt >/dev/null 2>&1 && managers+=("apt")
+
+    for mgr in "${managers[@]}"; do
+        echo
+        echo "Updating with $mgr..."
+        updated_list=""
+        count=0
+
+        case "$mgr" in
+            pkg)
+                updated_list=$(pkg upgrade -y 2>&1 | grep -E "Upgrading|Installing")
+                count=$(echo "$updated_list" | wc -l)
+                ;;
+            pip)
+                for pkgname in $(pip list --outdated --format=freeze | cut -d '=' -f1); do
+                    pip install --upgrade "$pkgname" >/dev/null 2>&1
+                    updated_list+="$pkgname"$'\n'
+                    ((count++))
+                done
+                ;;
+            cargo)
+                if command -v cargo-install-update >/dev/null 2>&1; then
+                    updated_list=$(cargo install-update -a -q 2>/dev/null)
+                    count=$(echo "$updated_list" | wc -l)
+                fi
+                ;;
+            apt)
+                apt update -y >/dev/null 2>&1
+                updated_list=$(apt list --upgradable 2>/dev/null | grep -v "Listing...")
+                apt upgrade -y >/dev/null 2>&1
+                count=$(echo "$updated_list" | wc -l)
+                ;;
+        esac
+
+        echo "Updated packages for $mgr:"
+        echo "$updated_list"
+        echo "Total updates for $mgr: $count"
+        grand_total=$((grand_total + count))
+    done
+
+    # Record final disk usage
+    final_usage=$(df -h ~ | awk 'NR==2 {print $3}')
+    echo
+    echo "Grand total of updated packages: $grand_total"
+    echo "Storage used before: $initial_usage"
+    echo "Storage used after : $final_usage"
+}
+
+#====================#
+# Additional helpers can go here
+# Ensure any command used exists before executing
+#====================#
