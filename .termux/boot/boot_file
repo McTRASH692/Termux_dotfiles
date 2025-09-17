@@ -1,0 +1,8 @@
+#! $PREFIX/bin/sh
+
+termux-wake-lock &&
+update &&
+upgrade -y &&
+crond &&
+sv enable sshd &&
+apachectl start 
