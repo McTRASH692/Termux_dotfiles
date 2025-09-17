@@ -1,261 +1,127 @@
-====================
-Git Commands Cheat Sheet (Terminal Usage)
-====================
-A quick reference guide for controlling a Git repository from the terminal.
-All commands are shown with a description and an example.
+# Git Commands from the Terminal
+This document lists common Git commands for managing repositories directly from the terminal.  
+Commands are grouped by workflow stage: creating a repo, staging files, committing changes, working with branches, and syncing with remotes.  
+Each command includes an explanation and an example.
 
-====================
-Initialize a Repository
-====================
-git init
-Creates a new Git repository in the current directory.
-Example:
-git init
+====================================
+INITIALIZE A NEW REPOSITORY
+====================================
 
-====================
-Clone a Repository
-====================
+git init
+Explanation: Creates a new local Git repository in the current directory.
+Example: git init
+
 git clone <repository-url>
-Copies an existing repository into a new local directory.
-Example:
-git clone https://github.com/user/repo.git
+Explanation: Creates a local copy of a remote repository.
+Example: git clone https://github.com/user/repo.git
 
-====================
-Check Repository Status
-====================
-git status
-Shows the status of changes as untracked, modified, or staged.
-Example:
-git status
 
-====================
-Stage Files for Commit
-====================
+====================================
+STAGING CHANGES
+====================================
+
+git status
+Explanation: Shows the status of changes in the working directory and staging area.
+Example: git status
+
 git add <file>
-Stages a specific file for the next commit. Use . to stage all changes.
-Example:
+Explanation: Stages a specific file for the next commit.
+Example: git add README.md
+
 git add .
+Explanation: Stages all changes in the current directory.
+Example: git add .
 
-====================
-Commit Changes
-====================
+
+====================================
+COMMITTING CHANGES
+====================================
+
 git commit -m "message"
-Records staged changes with a descriptive message.
-Example:
-git commit -m "Initial commit"
+Explanation: Commits the staged changes with a descriptive message.
+Example: git commit -m "Add initial project files"
 
-====================
-View Commit History
-====================
-git log
-Displays a list of commits in the repository’s history.
-Example:
-git log
 
-====================
-Create a New Branch
-====================
+====================================
+WORKING WITH BRANCHES
+====================================
+
+git branch
+Explanation: Lists all local branches in the repository.
+Example: git branch
+
 git branch <branch-name>
-Creates a new branch but does not switch to it.
-Example:
-git branch feature-login
+Explanation: Creates a new branch.
+Example: git branch feature-login
 
-====================
-Switch Branch
-====================
 git checkout <branch-name>
-Switches to the specified branch.
-Example:
-git checkout feature-login
+Explanation: Switches to a different branch.
+Example: git checkout feature-login
 
-====================
-Create and Switch to New Branch
-====================
 git checkout -b <branch-name>
-Creates a new branch and switches to it in one step.
-Example:
-git checkout -b feature-login
+Explanation: Creates and switches to a new branch in one step.
+Example: git checkout -b feature-login
 
-====================
-Merge Branch
-====================
 git merge <branch-name>
-Merges the given branch into the current branch.
-Example:
-git merge feature-login
+Explanation: Merges the specified branch into the current branch.
+Example: git merge feature-login
 
-====================
-Fetch from Remote
-====================
-git fetch
-Downloads objects and refs from another repository (does not merge).
-Example:
-git fetch origin
 
-====================
-Pull Changes (fetch + merge)
-====================
+====================================
+WORKING WITH REMOTES
+====================================
+
+git remote -v
+Explanation: Lists remote repositories linked to the project.
+Example: git remote -v
+
+git remote add origin <repository-url>
+Explanation: Adds a new remote repository and names it "origin".
+Example: git remote add origin https://github.com/user/repo.git
+
+git push -u origin <branch-name>
+Explanation: Pushes the current branch to the remote repository and sets upstream tracking.
+Example: git push -u origin main
+
 git pull
-Fetches from the remote repo and merges into the current branch.
-Example:
-git pull
+Explanation: Fetches and integrates changes from the remote repository into the current branch.
+Example: git pull
 
-====================
-Push Changes
-====================
-git push origin <branch-name>
-Uploads local commits to the remote repository.
-Example:
-git push origin main
 
-====================
-Undo Last Commit (keep changes staged)
-====================
-git reset --soft HEAD~1
-Removes the last commit but keeps the changes staged.
-Example:
-git reset --soft HEAD~1
+====================================
+INSPECTING HISTORY
+====================================
 
-====================
-Undo Last Commit (keep changes unstaged)
-====================
-git reset --mixed HEAD~1
-Removes the last commit and unstages the changes (keeps working copy).
-Example:
-git reset --mixed HEAD~1
+git log
+Explanation: Shows the commit history for the current branch.
+Example: git log
 
-====================
-Discard Local Changes to a File
-====================
+git show <commit-id>
+Explanation: Displays information about a specific commit.
+Example: git show 1a2b3c4d
+
+
+====================================
+UNDOING CHANGES
+====================================
+
+git reset <file>
+Explanation: Unstages a file without removing changes from the working directory.
+Example: git reset README.md
+
+git reset --hard <commit-id>
+Explanation: Resets the repository to the specified commit, discarding all changes.
+Example: git reset --hard 1a2b3c4d
+
 git checkout -- <file>
-Replaces local changes in <file> with the last committed version.
-Example:
-git checkout -- README.md
+Explanation: Discards changes in a file, restoring it to the last committed version.
+Example: git checkout -- README.md
 
-====================
-Stash Changes
-====================
-git stash
-Temporarily saves uncommitted changes for later use.
-Example:
-git stash
 
-====================
-List Stashes
-====================
-git stash list
-Lists all stashed changes.
-Example:
-git stash list
-
-====================
-Apply Stashed Changes
-====================
-git stash pop
-Applies the most recent stashed changes and removes them from the stash list.
-Example:
-git stash pop
-
-====================
-Show Remote Repositories
-====================
-git remote -v
-Shows remote names and their URLs.
-Example:
-git remote -v
-
-====================
-Add a Remote
-====================
-git remote add <name> <url>
-Adds a remote repository under the given name.
-Example:
-git remote add origin https://github.com/user/repo.git
-
-====================
-Show Changes (diff)
-====================
-git diff
-Shows unstaged changes between working directory and index or commits.
-Example:
-git diff
-
-====================
-Show Staged Changes (diff)
-====================
-git diff --staged
-Shows changes between staged files and the last commit.
-Example:
-git diff --staged
-
-====================
-Tag a Commit
-====================
-git tag -a <tagname> -m "message"
-Creates an annotated tag on the current commit.
-Example:
-git tag -a v1.0 -m "Release v1.0"
-
-====================
-Push Tags
-====================
-git push origin --tags
-Pushes all local tags to the remote repository.
-Example:
-git push origin --tags
-
-====================
-Rebase Branch onto Another
-====================
-git rebase <branch>
-Moves the current branch to begin on the tip of <branch>, replaying commits.
-Example:
-git rebase main
-
-====================
-Abort an Ongoing Rebase
-====================
-git rebase --abort
-Stops the rebase and returns the branch to its original state.
-Example:
-git rebase --abort
-
-====================
-Interactive Rebase (edit/squash commits)
-====================
-git rebase -i <commit>
-Opens an editor to interactively reorder, squash, or edit commits since <commit>.
-Example:
-git rebase -i HEAD~3
-
-====================
-Show Commit Details
-====================
-git show <commit>
-Displays information about the given commit (diff, message, etc.).
-Example:
-git show 1a2b3c4
-
-====================
-Blame (who changed each line)
-====================
-git blame <file>
-Shows who last modified each line of a file.
-Example:
-git blame README.md
-
-====================
-Clean Untracked Files
-====================
-git clean -fd
-Removes untracked files and directories (use cautiously).
-Example:
-git clean -fd
-
-====================
+====================================
 SOURCES
-====================
-1. Git Documentation — https://git-scm.com/docs
-2. Pro Git Book (Scott Chacon and Ben Straub) — https://git-scm.com/book/en/v2
-3. GitHub Docs — https://docs.github.com/en/get-started/using-git
-4. Compiled and formatted by ChatGPT (OpenAI) as a unified README reference
+====================================
+
+- Git Documentation: https://git-scm.com/docs  
+- GitHub Docs: https://docs.github.com/en/get-started/using-git  
+- Compiled and formatted by ChatGPT (OpenAI)
