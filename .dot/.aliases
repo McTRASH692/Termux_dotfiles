@@ -1,0 +1,41 @@
+# Quick aliases
+  # Speed Dial
+	alias dad="termux-telephony-call +61405956330"
+	alias duncan="termux-telephony-call +61428020917"
+	alias lauren="termux-telephony-call +61417788909"
+	alias mik="termux-telephony-call +61475294630"
+	alias paige="termux-telephony-call +61432262935"
+
+#Quick SSH
+        alias 0w-shell="ssh -t ron@10.0.0.55"
+	alias 400-shell="ssh -t ron@10.0.0.149"
+	alias rpi5-shell="ssh -t ron@10.0.0.14"
+
+#Basic
+	alias cl="clear && ~/.motd/init.sh"
+        alias la="ls -a"
+        alias ll="ls -l"
+
+
+#Proot Distros
+
+        alias adelie="proot-distro login adelie"
+#        alias alpine="proot-distro login alpine"
+        alias archlinux="proot-distro login archlinux"
+        alias artix="proot-distro login artix"
+        alias chimera="proot-distro login chimera"
+#        alias debian="priot-distro login debian"
+        alias deepin="proot-distro login deepin"
+        alias fedora="proot-distro login fedora"
+        alias manjaro="proot-distro login manjaro"
+        alias opensuse="proot-distro login opensuse"
+        alias pardus="proot-distro login pardus"
+        alias rocky="proot-distro login rockylinux"
+        alias ubuntu="proot-distro login ubuntu"
+        alias void="proot-distro login void"
+
+
+#Proot Distro X11
+
+        alias void-x11="startxfce4_void.sh"
+        alias arch-x11="startxfce4_arch.sh"

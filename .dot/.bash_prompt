@@ -1,0 +1,53 @@
+
+# Define some basic colors using tput (8-bit color: 256 colors)
+red="\[$(tput setaf 160)\]"
+bright_red="\[$(tput setaf 196)\]"
+light_purple="\[$(tput setaf 60)\]"
+orange="\[$(tput setaf 172)\]"
+blue="\[$(tput setaf 21)\]"
+light_blue="\[$(tput setaf 80)\]"
+magenta="\[$(tput setf 5)\]"
+purple="\[$(tput setaf 125)\]"
+bold="\[$(tput bold)\]"
+reset="\[$(tput sgr0)\]"
+
+
+# Define basic colors to be used in prompt
+## The color for username (light_blue, for root user: bright_red)
+username_color="${reset}${bold}${light_blue}\$([[ \${EUID} == 0 ]] && echo \"${bright_red}\")";
+## Color of @ and ✗ symbols (orange)
+at_color=$reset$bold$orange
+## Color of host/pc-name (blue)
+host_color=$reset$bold$blue
+## Color of current working directory (light_purple)
+directory_color=$reset$light_purple
+## Color for other characters (like the arrow)
+etc_color=$reset$red
+# If last operation did not succeded, add [✗]- to the prompt
+on_error="\$([[ \$? != 0 ]] && echo \"${etc_color}[${at_color}✗${etc_color}]─\")"
+# The last symbol in prompt ($, for root user: #)
+symbol="$reset${bold}${bright_red}$(if [[ ${EUID} == 0 ]]; then echo '#'; else echo '$'; fi)"
+
+# Time
+date="${reset}${bold}${light_purple}\D{%d-%m-%Y}"
+#time="${reset}${bold}${purple}\A${reset}"
+time="${reset}${bold}${purple}\$(date +%H:%M:%S)"
+
+# Setup the prompt/prefix for linux terminal
+PS1="\n"
+PS1+="${etc_color}┌─${on_error}[";
+PS1+="${username_color}\u"; # \u=Username
+PS1+="${at_color}@";
+PS1+="${host_color}\h" #\h=Host
+PS1+="${etc_color}]-[";
+PS1+="${directory_color}\w"; # \w=Working directory
+PS1+="${etc_color}]\n└──╼ "; # \n=New Line
+PS1+="${time}"
+PS1+="  "
+PS1+="${date}"
+PS1+="\n"
+PS1+="${etc_color}   └──╼ "; # \n=New Line
+PS1+="${symbol}";
+PS1+="${reset}";
+
+export PS1
