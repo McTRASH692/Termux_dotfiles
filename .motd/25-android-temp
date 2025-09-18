@@ -1,0 +1,26 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+BOLD='\033[1m'           # Bold
+RED='\033[1;31m'         # Red
+GREEN='\033[1;32m'       # Green
+YELLOW='\033[1;33m'      # Yellow
+NC='\033[0m'
+
+bat=$(</sys/class/thermal/thermal_zone88/temp)
+bat_TEMP=$(echo $bat | cut -c 1-2)
+
+[[ "$bat_TEMP" -lt "60" ]] && FG=${GREEN}
+[[ "$bat_TEMP" -gt "60" ]] && FG=${YELLOW}
+[[ "$bat_TEMP" -gt "75" ]] && FG=${RED}
+echo -e "\n${BOLD}"Battery Temperature:"${NC} ${FG}${bat_TEMP}c${NC}"
+
+
+
+cpu=$(</sys/class/thermal/thermal_zone34/temp)
+cpu_TEMP=$(echo $cpu | cut -c 1-2)
+
+
+[[ "$cpu_TEMP" -lt "60" ]] && FG=${GREEN}
+[[ "$cpu_TEMP" -gt "60" ]] && FG=${YELLOW}
+[[ "$cpu_TEMP" -gt "75" ]] && FG=${RED}
+echo -e "\n${BOLD}"CPU Temperature:"${NC} ${FG}${cpu_TEMP}c${NC}"
